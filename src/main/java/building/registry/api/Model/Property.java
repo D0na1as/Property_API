@@ -1,12 +1,12 @@
 package building.registry.api.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Property {
 
     @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
     private String Owner;
     private double size;
