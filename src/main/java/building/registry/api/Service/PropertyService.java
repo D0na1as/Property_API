@@ -14,9 +14,8 @@ public class PropertyService {
     @Autowired
     PropertyRepo propertyRepo;
 
-    public boolean saveProperty(Property property) {
-        propertyRepo.save(property);
-        return true;
+    public Property saveProperty(Property property){
+        return propertyRepo.save(property);
     }
 
     public Property getProperty(int id) {

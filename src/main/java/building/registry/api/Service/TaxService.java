@@ -19,9 +19,9 @@ public class TaxService {
     @Autowired
     PropertyService propertyService;
 
-    public boolean saveTax(Tax tax) {
-        taxRepo.save(tax);
-        return true;
+    public Tax saveTax(Tax tax) {
+        return taxRepo.save(tax);
+
     }
 
     public double getTax(String type) {

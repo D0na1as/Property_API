@@ -17,8 +17,8 @@ public class Tax {
     public Tax() {
     }
 
-    public Tax(int id, String type, double value) {
-        this.id = id;
+    public Tax(String type, double value) {
+
         this.type = type;
         this.value = value;
     }

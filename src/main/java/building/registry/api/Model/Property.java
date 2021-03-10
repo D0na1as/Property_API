@@ -6,24 +6,27 @@ import javax.persistence.*;
 public class Property {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String Owner;
     private double size;
     private double value;
     private String type;
-    private Address address;
+    private String city;
+    private String street;
+    private int number;
 
     public Property() {
     }
 
-    public Property(int id, String owner, double size, double value, String type, Address address) {
-        this.id = id;
+    public Property(String owner, double size, double value, String type, String city, String street, int number) {
         Owner = owner;
         this.size = size;
         this.value = value;
         this.type = type;
-        this.address = address;
+        this.city = city;
+        this.street = street;
+        this.number = number;
     }
 
     public int getId() {
@@ -66,11 +69,27 @@ public class Property {
         this.type = type;
     }
 
-    public Address getAddress() {
-        return address;
+    public String getCity() {
+        return city;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }
