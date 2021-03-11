@@ -8,7 +8,7 @@ public class Property {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String Owner;
+    private String owner;
     private double size;
     private double value;
     private String type;
@@ -20,7 +20,7 @@ public class Property {
     }
 
     public Property(String owner, double size, double value, String type, String city, String street, int number) {
-        Owner = owner;
+        this.owner = owner;
         this.size = size;
         this.value = value;
         this.type = type;
@@ -38,11 +38,11 @@ public class Property {
     }
 
     public String getOwner() {
-        return Owner;
+        return owner;
     }
 
     public void setOwner(String owner) {
-        Owner = owner;
+        this.owner = owner;
     }
 
     public double getSize() {

@@ -24,13 +24,12 @@ public class TaxService {
 
     }
 
-    public double getTax(String type) {
+    public Tax getTax(String type) {
         return taxRepo.getTaxValue(type);
     }
 
-    public boolean removeTax(String type) {
+    public void removeTax(String type) {
         taxRepo.removeTax(type);
-        return true;
     }
 
     public List<Tax> getAllTaxes() {
@@ -41,7 +40,7 @@ public class TaxService {
         List<Property> properties = propertyService.getPropertyByOwner(owner);
         double sum = 0;
         for (Property property : properties) {
-            sum += property.getValue() * taxRepo.getTaxValue(property.getType());
+            sum += property.getValue() * taxRepo.getTaxValue(property.getType()).getValue() / 100;
         }
         return sum;
     }

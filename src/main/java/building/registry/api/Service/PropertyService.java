@@ -18,8 +18,12 @@ public class PropertyService {
         return propertyRepo.save(property);
     }
 
-    public Property getProperty(int id) {
+    public Property getPropertyById(int id) {
         return propertyRepo.findById(id).orElse(null);
+    }
+
+    public List<Property> getPropertyByOwner(String owner) {
+        return propertyRepo.findByOwner(owner);
     }
 
     public boolean removeProperty(int id) {
@@ -27,7 +31,4 @@ public class PropertyService {
         return true;
     }
 
-    public List<Property> getPropertyByOwner(String owner) {
-        return propertyRepo.findByOwner(owner);
-    }
 }
