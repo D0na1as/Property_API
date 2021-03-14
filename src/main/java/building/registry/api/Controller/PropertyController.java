@@ -1,6 +1,5 @@
 package building.registry.api.Controller;
 
-import building.registry.api.Config.Response;
 import building.registry.api.Model.Property;
 import building.registry.api.Model.Tax;
 import building.registry.api.Service.PropertyService;
@@ -9,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @Controller
@@ -20,33 +21,35 @@ public class PropertyController {
     PropertyService propertySrv;
     @Autowired
     TaxService taxService;
-    @Autowired
-    Response resp;
 
     @RequestMapping( value = "/property", method = RequestMethod.POST)
     public ResponseEntity addProperty(@RequestBody Property property)  {
         Tax tax = taxService.getTax(property.getType());
         if (tax==null) {
-            return resp.createdResponse(0, null, null);
+            ResponseEntity.badRequest().body("Tax must be in database!");
         }
         Property obj = propertySrv.saveProperty(property);
         String path = "/v1/property/{id}";
-        return resp.createdResponse(obj.getId(), path, obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentServletMapping().path(path).buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).body(obj);
     }
 
     @RequestMapping( value = "/property/{id}", method = RequestMethod.GET)
     public ResponseEntity getPropertyById(@PathVariable int id ) {
         Property obj = propertySrv.getPropertyById(id);
-        return resp.response(obj);
+        if (obj==null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(obj);
     }
 
     @RequestMapping( value = "/property", method = RequestMethod.GET)
     public ResponseEntity getPropertyById(@RequestParam(value = "owner") String owner) {
         List<Property> obj = propertySrv.getPropertyByOwner(owner);
         if (obj.size()==0) {
-            return resp.response(false);
+            return ResponseEntity.notFound().build();
         }
-        return resp.response(obj);
+        return ResponseEntity.ok(obj);
     }
 
     @RequestMapping( value = "/property/{id}", method = RequestMethod.PUT)
@@ -56,9 +59,9 @@ public class PropertyController {
         if (obj!=null) {
             property.setId(id);
             obj = propertySrv.saveProperty(property);
-            return resp.response(obj);
+            return ResponseEntity.ok(obj);
         } else {
-            return resp.response(false);
+            return ResponseEntity.badRequest().body("No such property in database!");
         }
     }
 
@@ -66,9 +69,10 @@ public class PropertyController {
     public ResponseEntity removeProperty(@PathVariable("id") int id)  {
         Property obj = propertySrv.getPropertyById(id);
         if (obj!=null) {
-            return resp.response(propertySrv.removeProperty(id));
+            propertySrv.removeProperty(id);
+            return ResponseEntity.ok().build();
         } else {
-            return resp.response(false);
+            return ResponseEntity.notFound().build();
         }
     }
 }
