@@ -27,11 +27,12 @@ public class PropertyController {
         Tax tax = taxService.getTax(property.getType());
         if (tax==null) {
             ResponseEntity.badRequest().body("Tax must be in database!");
+        } else {
+            Property obj = propertySrv.saveProperty(property);
+            String path = "/v1/property/{id}";
+            URI uri = ServletUriComponentsBuilder.fromCurrentServletMapping().path(path).buildAndExpand(obj.getId()).toUri();
+            return ResponseEntity.created(uri).body(obj);
         }
-        Property obj = propertySrv.saveProperty(property);
-        String path = "/v1/property/{id}";
-        URI uri = ServletUriComponentsBuilder.fromCurrentServletMapping().path(path).buildAndExpand(obj.getId()).toUri();
-        return ResponseEntity.created(uri).body(obj);
     }
 
     @RequestMapping( value = "/property/{id}", method = RequestMethod.GET)
